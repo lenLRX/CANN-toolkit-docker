@@ -34,6 +34,8 @@ RUN sed -i "s@http://.*archive.ubuntu.com@http://repo.huaweicloud.com@g" /etc/ap
 SHELL ["/bin/sh", "-c"]
 RUN export LD_LIBRARY_PATH=/usr/local/python3.7.5/lib:$LD_LIBRARY_PATH &&\
     export PATH=/usr/local/python3.7.5/bin:$PATH && \
-    chmod +x ./Ascend*.run && ./Ascend*.run --check &&\
-    ./Ascend*.run --devel --install-username=root --install-usergroup=root &&\
-    echo "source /usr/local/Ascend/ascend-toolkit/set_env.sh" >> /root/.bashrc
+    chmod +x ./$CANN_TOOLKIT_PATH && ./$CANN_TOOLKIT_PATH --check &&\
+    ./$CANN_TOOLKIT_PATH --devel --install-username=root --install-usergroup=root &&\
+    echo "source /usr/local/Ascend/ascend-toolkit/set_env.sh" >> /root/.bashrc &&\
+    echo "export PATH=\$PATH:/usr/local/Ascend/ascend-toolkit/latest/atc/ccec_compiler/bin" >> /root/.bashrc && \
+    rm Ascend-*.run && rm -rf Python-3.7.5*
