@@ -1,0 +1,29 @@
+FROM atc:latest
+SHELL ["/bin/bash", "-c"]
+ARG CANN_AMCT_PATH
+ADD $CANN_AMCT_PATH ./
+ARG CAFFE_SRC
+ADD $CAFFE_SRC ./
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt install -y vim libatlas-base-dev libgflags-dev libgoogle-glog-dev liblmdb-dev git libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler &&\
+    apt install -y --no-install-recommends libboost-all-dev && \
+    ln -sf /usr/lib/x86_64-linux-gnu/libhdf5_serial.so /usr/lib/x86_64-linux-gnu/libhdf5.so && \
+    ln -sf /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so /usr/lib/x86_64-linux-gnu/libhdf5_hl.so && \
+    export LD_LIBRARY_PATH=/usr/local/python3.7.5/lib:$LD_LIBRARY_PATH &&\
+    export PATH=/usr/local/python3.7.5/bin:$PATH &&\
+    python3.7.5 -m pip install --upgrade pip && \
+    pip3.7 install amct/amct_caffe/amct_caffe-*.whl && \
+    python3.7.5 -m pip install opencv-python gnureadline scikit-image && \
+    unzip *.zip &&\
+    rm *.zip && \
+    export CAFFE_REL_PATH=`find . -maxdepth 1 -name caffe* -type d` && \
+    export CAFFE_ABS_PATH=`realpath $CAFFE_REL_PATH` && \
+    cd amct/amct_caffe/ && \
+    tar -zxvf caffe_patch.tar.gz && \
+    cd caffe_patch &&\
+    python3.7 install.py --caffe_dir $CAFFE_ABS_PATH --custom_proto $CAFFE_ABS_PATH/custom.proto &&\
+    cd $CAFFE_ABS_PATH && \
+    make clean && \
+    make all -j && make pycaffe -j && \
+    echo "export PYTHONPATH=\$PYTHONPATH:$CAFFE_ABS_PATH/python" >> ~/.bashrc

@@ -26,5 +26,5 @@ docker run -it -v=`pwd`:/work atc:latest
     * CAFFE_SRC=本地的caffe代码zip包
     * 非root用户请在前面加上sudo
 ```bash
-docker build --build-arg CANN_AMCT_PATH=Ascend-cann-amct_1.76.22.10.220_ubuntu18.04-x86_64.tar.gz --build-arg CAFFE_SRC=caffe-ascend-amct.zip -f Dockerfile.amct . -t amct-caffe:latest
+docker build --build-arg CANN_AMCT_PATH=Ascend-cann-amct_1.76.22.10.220_ubuntu18.04-x86_64.tar.gz --build-arg CAFFE_SRC=caffe-ascend-amct.zip -f Dockerfile.amct-caffe . -t amct-caffe:latest
 ```
