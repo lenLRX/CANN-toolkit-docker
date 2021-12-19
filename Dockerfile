@@ -36,7 +36,7 @@ SHELL ["/bin/sh", "-c"]
 RUN export LD_LIBRARY_PATH=/usr/local/python3.7.5/lib:$LD_LIBRARY_PATH &&\
     export PATH=/usr/local/python3.7.5/bin:$PATH && \
     chmod +x ./$CANN_TOOLKIT_PATH && ./$CANN_TOOLKIT_PATH --check &&\
-    ./$CANN_TOOLKIT_PATH --devel --install-username=root --install-usergroup=root &&\
+    ./$CANN_TOOLKIT_PATH --devel &&\
     echo "source /usr/local/Ascend/ascend-toolkit/set_env.sh 2> /dev/null || true" >> /root/.bashrc &&\
     echo "export PATH=\$PATH:/usr/local/Ascend/ascend-toolkit/latest/atc/ccec_compiler/bin" >> /root/.bashrc && \
     echo "export PATH=\$PATH:/usr/local/Ascend/ascend-toolkit/latest/atc/bin" >> /root/.bashrc && \
