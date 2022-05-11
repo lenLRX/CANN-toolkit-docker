@@ -3,6 +3,7 @@ SHELL ["/bin/bash", "-c"]
 ARG CANN_TOOLKIT_PATH
 COPY pip.conf /root/.pip/pip.conf
 ADD $CANN_TOOLKIT_PATH ./
+RUN groupadd HwHiAiUser && useradd -rm -d /home/HwHiAiUser -s /bin/bash -g HwHiAiUser -G HwHiAiUser -u 1001 HwHiAiUser
 RUN sed -i "s@http://.*archive.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list &&\
     sed -i "s@http://.*security.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list &&\
     apt-get update && \
@@ -36,7 +37,7 @@ SHELL ["/bin/sh", "-c"]
 RUN export LD_LIBRARY_PATH=/usr/local/python3.7.5/lib:$LD_LIBRARY_PATH &&\
     export PATH=/usr/local/python3.7.5/bin:$PATH && \
     chmod +x ./$CANN_TOOLKIT_PATH && ./$CANN_TOOLKIT_PATH --check &&\
-    ./$CANN_TOOLKIT_PATH --devel &&\
+    ./$CANN_TOOLKIT_PATH --install-for-all --devel &&\
     echo "source /usr/local/Ascend/ascend-toolkit/set_env.sh 2> /dev/null || true" >> /root/.bashrc &&\
     echo "export PATH=\$PATH:/usr/local/Ascend/ascend-toolkit/latest/atc/ccec_compiler/bin" >> /root/.bashrc && \
     echo "export PATH=\$PATH:/usr/local/Ascend/ascend-toolkit/latest/atc/bin" >> /root/.bashrc && \
